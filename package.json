@@ -1,5 +1,5 @@
 {
-  "name": "prisma-blog",
+  "name": "layered-architecture-starter",
   "version": "1.0.0",
   "description": "",
   "main": "./src/server.js",
@@ -9,10 +9,13 @@
     "#config": "./src/config/config.js",
     "#db/*": "./src/db/*",
     "#repository": "./src/repository/index.js",
-    "#constants": "./src/constants/index.js",
-    "#utils": "./src/utils/index.js",
+    "#constants": "./src/common/constants/index.js",
+    "#exceptions": "./src/common/exceptions/index.js",
+    "#controllers": "./src/controllers/index.js",
+    "#controllers/*": "./src/controllers/*",
+    "#services": "./src/services/index.js",
     "#middlewares": "./src/middlewares/index.js",
-    "#exceptions": "./src/exceptions/index.js"
+    "#providers": "./src/providers/index.js"
   },
   "scripts": {
     "dev": "nodemon --env-file=./env/.env.development ./src/server.js",
@@ -35,8 +38,10 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
+    "awilix": "^13.0.1",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
+    "date-fns": "^4.1.0",
     "dotenv-cli": "^11.0.0",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
