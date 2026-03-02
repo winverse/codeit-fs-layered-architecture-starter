@@ -1,36 +1,46 @@
-import {
-  verifyToken,
-  shouldRefreshToken,
-  refreshTokens,
-  setAuthCookies,
-} from '#utils';
-import { ERROR_MESSAGE } from '#constants';
-import { UnauthorizedException } from '#exceptions';
+export class AuthMiddleware {
+  #tokenProvider;
+  #authService;
+  #cookieProvider;
 
-export const authMiddleware = async (req, res, next) => {
-  try {
-    const { accessToken, refreshToken } = req.cookies;
-
-    if (!accessToken) {
-      throw new UnauthorizedException(ERROR_MESSAGE.NO_AUTH_TOKEN);
-    }
-
-    const payload = verifyToken(accessToken, 'access');
-    if (!payload) {
-      throw new UnauthorizedException(ERROR_MESSAGE.INVALID_TOKEN);
-    }
-
-    req.user = { id: payload.userId };
-
-    if (shouldRefreshToken(payload) && refreshToken) {
-      const newTokens = await refreshTokens(refreshToken);
-      if (newTokens) {
-        setAuthCookies(res, newTokens);
-      }
-    }
-
-    next();
-  } catch (error) {
-    next(error);
+  constructor({ tokenProvider, authService, cookieProvider }) {
+    this.#tokenProvider = tokenProvider;
+    this.#authService = authService;
+    this.#cookieProvider = cookieProvider;
   }
-};
+
+  async authenticate(req, res, next) {
+    try {
+      const { accessToken, refreshToken } = req.cookies;
+
+      if (!accessToken && !refreshToken) {
+        return next();
+      }
+
+      const accessUserId = accessToken
+        ? this.#tokenProvider.verifyAccessToken(accessToken)?.userId
+        : null;
+
+      if (accessUserId) {
+        req.user = { id: accessUserId };
+        return next();
+      }
+
+      if (!refreshToken) {
+        this.#cookieProvider.clearAuthCookies(res);
+        return next();
+      }
+
+      const { user, tokens } =
+        await this.#authService.refreshTokens(refreshToken);
+
+      this.#cookieProvider.setAuthCookies(res, tokens);
+      req.user = { id: user.id };
+
+      return next();
+    } catch {
+      this.#cookieProvider.clearAuthCookies(res);
+      return next();
+    }
+  }
+}

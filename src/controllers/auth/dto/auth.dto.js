@@ -14,10 +14,3 @@ export const loginSchema = z.object({
     .string({ error: '비밀번호는 필수입니다.' })
     .min(1, '비밀번호를 입력해주세요.'),
 });
-
-// ID 파라미터 검증 스키마
-export const idParamSchema = z.object({
-  id: z.coerce.number().int().positive({
-    message: 'ID는 양수여야 합니다.',
-  }),
-});

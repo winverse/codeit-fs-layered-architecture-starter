@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { config } from '#coonfig';
+import { config } from '#config';
 
 export class TokenProvider {
   #accessSecret;
