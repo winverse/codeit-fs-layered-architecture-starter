@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { BaseController } from './base.controller.js';
 
+export * from './base.controller.js';
 export * from './auth/index.js';
 export * from './users/index.js';
 

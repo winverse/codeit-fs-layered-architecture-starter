@@ -12,7 +12,6 @@
     "#constants": "./src/common/constants/index.js",
     "#exceptions": "./src/common/exceptions/index.js",
     "#controllers": "./src/controllers/index.js",
-    "#controllers/*": "./src/controllers/*",
     "#services": "./src/services/index.js",
     "#middlewares": "./src/middlewares/index.js",
     "#providers": "./src/providers/index.js"
