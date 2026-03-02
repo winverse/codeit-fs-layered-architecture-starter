@@ -25,4 +25,13 @@ export default [
       'no-var': 'error',
     },
   },
+  {
+    files: ['public/**/*.js'],
+    languageOptions: {
+      globals: {
+        document: 'readonly',
+        fetch: 'readonly',
+      },
+    },
+  },
 ];
