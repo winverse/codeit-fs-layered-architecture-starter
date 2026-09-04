@@ -7,7 +7,7 @@ import {
 } from '#utils';
 import { validate } from '#middlewares';
 import { HTTP_STATUS, ERROR_MESSAGE } from '#constants';
-import { signUpSchema, loginSchema } from './auth.schemas.js';
+import { signUpSchema, loginSchema } from './auth-schemas.js';
 import { usersRepository } from '#repository';
 import { UnauthorizedException } from '#exceptions';
 

@@ -1,4 +1,4 @@
-import { HttpException } from './http.exception.js';
+import { HttpException } from './http-exception.js';
 import { ERROR_MESSAGE } from '#constants';
 
 export class UnauthorizedException extends HttpException {
