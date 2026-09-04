@@ -78,10 +78,14 @@ const signUp = async (input) => {
     body: input,
   });
   expectStatus(result, 201, '회원가입은 201을 반환해야 합니다.');
+  assert.ok(
+    Number.isInteger(result.body.id),
+    '회원가입 응답에 사용자 ID가 필요합니다.',
+  );
+  createdUserIds.add(result.body.id);
   assert.ok(hasSetCookie(result, 'accessToken'));
   assert.ok(hasSetCookie(result, 'refreshToken'));
   assert.equal(result.body.password, undefined);
-  createdUserIds.add(result.body.id);
   return result;
 };
 
@@ -242,8 +246,12 @@ const run = async () => {
     body: thirdInput,
   });
   expectStatus(third, 201, '사용자 생성은 201을 반환해야 합니다.');
-  assert.equal(third.body.password, undefined);
+  assert.ok(
+    Number.isInteger(third.body.id),
+    '사용자 생성 응답에 ID가 필요합니다.',
+  );
   createdUserIds.add(third.body.id);
+  assert.equal(third.body.password, undefined);
 
   const thirdDetail = await request(`/api/users/${third.body.id}`);
   expectStatus(

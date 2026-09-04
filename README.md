@@ -19,17 +19,17 @@ Repository, Provider의 책임을 분리하고 Awilix 컨테이너와 `App` 부�
 
 1. `env/.env.example`을 `env/.env.development`로 복사하고 PostgreSQL 연결 정보와
    서로 다른 JWT 비밀키를 입력합니다.
-2. 의존성을 설치하고 Prisma Client를 생성합니다.
+2. 의존성을 설치합니다.
 
 ```bash
 pnpm install
-pnpm prisma:generate
 ```
 
-3. 폐기 가능한 로컬 개발 데이터베이스에 스키마를 반영합니다.
+3. 폐기 가능한 로컬 개발 데이터베이스에 스키마를 반영하고 Prisma Client를 생성합니다.
 
 ```bash
 pnpm prisma:push
+pnpm prisma:generate
 ```
 
 초기 데이터가 필요하면 `pnpm seed`를 실행합니다. 이 명령은 `localhost:5432`의
