@@ -1,8 +1,8 @@
-import { PrismaClient } from '#generated/prisma/client.ts';
-import { PrismaPg } from '@prisma/adapter-pg';
+import postgres from '@prisma/orm-postgres/runtime';
 import { faker } from '@faker-js/faker';
 import bcrypt from 'bcrypt';
 import { pathToFileURL, URL } from 'node:url';
+import contractJson from '../src/prisma/contract.json' with { type: 'json' };
 
 const NUM_USERS_TO_CREATE = 5;
 const BCRYPT_SALT_ROUNDS = 10;
@@ -19,15 +19,12 @@ const makeUserInput = async () => {
   };
 };
 
-const resetDb = (prisma) => prisma.user.deleteMany();
+const resetDb = (db) => db.orm.public.User.deleteAll();
 
-export const seedUsers = async (prisma, count) => {
+export const seedUsers = async (db, count) => {
   const data = await Promise.all(xs(count).map(makeUserInput));
 
-  return await prisma.user.createManyAndReturn({
-    data,
-    select: { id: true },
-  });
+  return await db.orm.public.User.select('id').createAll(data);
 };
 
 const getDevelopmentDatabaseUrl = () => {
@@ -63,31 +60,31 @@ const getDevelopmentDatabaseUrl = () => {
   return databaseUrl.toString();
 };
 
-async function seed(prisma) {
+async function seed(db) {
   console.log('🌱 시딩 시작...');
 
-  await resetDb(prisma);
+  await resetDb(db);
   console.log('✅ 기존 데이터 삭제 완료');
 
-  const users = await seedUsers(prisma, NUM_USERS_TO_CREATE);
+  const users = await seedUsers(db, NUM_USERS_TO_CREATE);
   console.log(`✅ ${users.length}명의 유저가 생성되었습니다`);
 
   console.log('✅ 데이터 시딩 완료');
 }
 
 const run = async () => {
-  const adapter = new PrismaPg({
-    connectionString: getDevelopmentDatabaseUrl(),
+  const db = postgres({
+    contractJson,
+    url: getDevelopmentDatabaseUrl(),
   });
-  const prisma = new PrismaClient({ adapter });
 
   try {
-    await seed(prisma);
+    await seed(db);
   } catch (error) {
     console.error('❌ 시딩 에러:', error);
     process.exitCode = 1;
   } finally {
-    await prisma.$disconnect();
+    await db.close();
   }
 };
 

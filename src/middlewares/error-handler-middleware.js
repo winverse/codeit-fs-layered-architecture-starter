@@ -1,5 +1,4 @@
-import { Prisma } from '#generated/prisma/client.ts';
-import { ERROR_MESSAGE, HTTP_STATUS, PRISMA_ERROR } from '#constants';
+import { DB_ERROR, ERROR_MESSAGE, HTTP_STATUS } from '#constants';
 import { HttpException } from '#exceptions';
 
 export const errorHandler = (err, req, res, _next) => {
@@ -11,22 +10,12 @@ export const errorHandler = (err, req, res, _next) => {
     });
   }
 
-  if (err instanceof Prisma.PrismaClientKnownRequestError) {
-    if (err.code === PRISMA_ERROR.UNIQUE_CONSTRAINT) {
-      const field = err.meta?.target?.[0];
-      return res.status(HTTP_STATUS.CONFLICT).json({
-        success: false,
-        message: `${field}가 이미 사용 중입니다.`,
-      });
-    }
-
-    // P2025: Record not found
-    if (err.code === PRISMA_ERROR.RECORD_NOT_FOUND) {
-      return res.status(HTTP_STATUS.NOT_FOUND).json({
-        success: false,
-        message: ERROR_MESSAGE.RESOURCE_NOT_FOUND,
-      });
-    }
+  // 23505: 고유 제약 위반(이미 사용 중인 값)
+  if (err.sqlState === DB_ERROR.UNIQUE_VIOLATION) {
+    return res.status(HTTP_STATUS.CONFLICT).json({
+      success: false,
+      message: ERROR_MESSAGE.RESOURCE_CONFLICT,
+    });
   }
 
   // 처리되지 않은 모든 에러

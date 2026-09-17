@@ -1,6 +1,6 @@
 # Layered Architecture 마이그레이션 Starter
 
-이 프로젝트는 Express와 Prisma로 만든 인증·사용자 API를 계층형 아키텍처로
+이 프로젝트는 Express와 Prisma 8로 만든 인증·사용자 API를 계층형 아키텍처로
 마이그레이션하기 위한 시작 코드입니다. 처음 실행하면 라우터 안에 HTTP 처리,
 비즈니스 규칙, 데이터 접근 코드가 함께 있는 상태를 확인할 수 있습니다.
 
@@ -8,6 +8,8 @@
 
 - `src/routes/`: 인증·사용자 API와 비즈니스 규칙이 섞여 있는 시작 코드
 - `src/repository/`: 함수 객체 형태의 Prisma 데이터 접근 코드
+- `src/prisma/`: Prisma 8 계약(`contract.prisma`), emit 결과물(`contract.json`,
+  `contract.d.ts`)과 데이터베이스 연결 파일(`db.js`)
 - `src/utils/`: 비밀번호·JWT·쿠키 처리 함수
 - `public/`: API 결과를 확인하는 로컬 테스트 화면
 
@@ -25,12 +27,17 @@ Repository, Provider의 책임을 분리하고 Awilix 컨테이너와 `App` 부�
 pnpm install
 ```
 
-3. 폐기 가능한 로컬 개발 데이터베이스에 스키마를 반영하고 Prisma Client를 생성합니다.
+3. 비어 있는 로컬 개발 데이터베이스에 계약의 테이블을 만듭니다. emit 결과물은
+   저장소에 포함되어 있으므로 계약을 바꾸지 않았다면 emit을 다시 실행하지 않아도
+   됩니다.
 
 ```bash
-pnpm prisma:push
-pnpm prisma:generate
+pnpm db:init
 ```
+
+계약(`src/prisma/contract.prisma`)을 바꿨다면 `pnpm contract:emit`으로 결과물을
+다시 만들고, 이미 테이블이 있는 데이터베이스에는 `pnpm db:update`로 변경을
+반영합니다.
 
 초기 데이터가 필요하면 `pnpm seed`를 실행합니다. 이 명령은 `localhost:5432`의
 `prisma_auth` 개발 데이터베이스에서만 동작하며 기존 사용자 데이터를

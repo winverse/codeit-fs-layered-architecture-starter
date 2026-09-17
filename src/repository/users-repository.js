@@ -1,38 +1,27 @@
-import { prisma } from '#db/prisma.js';
+import { db } from '#prisma/db.js';
 
 function createUser(data) {
-  return prisma.user.create({
-    data,
-  });
+  return db.orm.public.User.create(data);
 }
 
 function findUserById(id) {
-  return prisma.user.findUnique({
-    where: { id: Number(id) },
-  });
+  return db.orm.public.User.where({ id: Number(id) }).first();
 }
 
 function findAllUsers() {
-  return prisma.user.findMany();
+  return db.orm.public.User.all();
 }
 
 function updateUser(id, data) {
-  return prisma.user.update({
-    where: { id: Number(id) },
-    data,
-  });
+  return db.orm.public.User.where({ id: Number(id) }).update(data);
 }
 
 function deleteUser(id) {
-  return prisma.user.delete({
-    where: { id: Number(id) },
-  });
+  return db.orm.public.User.where({ id: Number(id) }).delete();
 }
 
 function findUserByEmail(email) {
-  return prisma.user.findUnique({
-    where: { email },
-  });
+  return db.orm.public.User.where({ email }).first();
 }
 
 export const usersRepository = {

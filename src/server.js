@@ -1,5 +1,5 @@
 import express from 'express';
-import { prisma } from './db/prisma.js';
+import { db } from './prisma/db.js';
 import { config } from '#config';
 import { router as apiRouter } from './routes/index.js';
 import cookieParser from 'cookie-parser';
@@ -29,4 +29,4 @@ const server = app.listen(config.PORT, () => {
 });
 
 // Setup graceful shutdown handlers
-setupGracefulShutdown(server, prisma);
+setupGracefulShutdown(server, db);

@@ -1,7 +1,6 @@
-// Prisma 에러 코드 상수
-export const PRISMA_ERROR = {
-  UNIQUE_CONSTRAINT: 'P2002',
-  RECORD_NOT_FOUND: 'P2025',
+// 데이터베이스 에러 코드(SQLSTATE) 상수
+export const DB_ERROR = {
+  UNIQUE_VIOLATION: '23505',
 };
 
 // 에러 메시지 상수
