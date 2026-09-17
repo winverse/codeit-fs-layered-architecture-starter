@@ -2,5 +2,4 @@ allowBuilds:
   bcrypt: true
   esbuild: true
   msgpackr-extract: true
-  prisma: set this to true or false
   workerd: true
