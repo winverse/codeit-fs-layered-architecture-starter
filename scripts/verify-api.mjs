@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import jwt from 'jsonwebtoken';
 
-const baseUrl = process.env.BASE_URL ?? 'http://localhost:5001';
+const baseUrl =
+  process.env.BASE_URL ?? `http://localhost:${process.env.PORT ?? 5001}`;
 const accessSecret = process.env.JWT_ACCESS_SECRET;
 const refreshSecret = process.env.JWT_REFRESH_SECRET;
 
