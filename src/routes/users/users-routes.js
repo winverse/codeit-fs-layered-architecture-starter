@@ -79,7 +79,7 @@ usersRouter.patch(
       const { email, name } = req.body;
 
       if (req.user.id !== id) {
-        throw new ForbiddenException(ERROR_MESSAGE.FORBIDDEN_RESOURCE);
+        throw new ForbiddenException(ERROR_MESSAGE.FORBIDDEN);
       }
 
       const existingUser = await usersRepository.findUserById(id);
@@ -107,7 +107,7 @@ usersRouter.delete(
       const { id } = req.params;
 
       if (req.user.id !== id) {
-        throw new ForbiddenException(ERROR_MESSAGE.FORBIDDEN_RESOURCE);
+        throw new ForbiddenException(ERROR_MESSAGE.FORBIDDEN);
       }
 
       const existingUser = await usersRepository.findUserById(id);

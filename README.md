@@ -19,17 +19,24 @@ Repository, Provider의 책임을 분리하고 Awilix 컨테이너와 `App` 부�
 
 ## 시작하기
 
-1. `env/.env.example`을 `env/.env.development`로 복사하고 PostgreSQL 연결 정보와
-   서로 다른 JWT 비밀키를 입력합니다.
-2. 의존성을 설치합니다.
+1. 의존성을 설치합니다.
 
 ```bash
 pnpm install
 ```
 
-3. 비어 있는 로컬 개발 데이터베이스에 계약의 테이블을 만듭니다. emit 결과물은
-   저장소에 포함되어 있으므로 계약을 바꾸지 않았다면 emit을 다시 실행하지 않아도
-   됩니다.
+2. 로컬 PostgreSQL에 비어 있는 `prisma_auth` 데이터베이스를 만듭니다. `psql`로
+   접속한 뒤 아래 SQL을 실행합니다.
+
+```sql
+CREATE DATABASE prisma_auth;
+```
+
+3. `env/.env.example`을 `env/.env.development`로 복사하고 PostgreSQL 연결 정보와
+   서로 다른 JWT 비밀키 두 개를 입력합니다.
+
+4. 비어 있는 데이터베이스에 계약의 테이블을 만듭니다. emit 결과물은 저장소에
+   포함되어 있으므로 계약을 바꾸지 않았다면 emit을 다시 실행하지 않아도 됩니다.
 
 ```bash
 pnpm db:init
@@ -43,11 +50,12 @@ pnpm db:init
 `prisma_auth` 개발 데이터베이스에서만 동작하며 기존 사용자 데이터를
 초기화합니다.
 
-4. 개발 서버를 실행합니다.
+5. 개발 서버를 실행합니다.
 
 ```bash
 pnpm dev
 ```
 
-서버가 시작되면 `http://localhost:5001`에서 테스트 화면을 열거나
-`http://localhost:5001/api` 아래의 API를 호출할 수 있습니다.
+터미널에 `[development] Server running at http://localhost:5001`이 보이면
+`http://localhost:5001/api` 아래의 인증·사용자 API를 호출할 수 있습니다.
+`public/`의 테스트 화면은 강의에서 `App` 부트스트랩까지 연결한 뒤에 열립니다.
