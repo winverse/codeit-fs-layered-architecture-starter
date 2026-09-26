@@ -29,8 +29,12 @@ const createdUserIds = new Set();
 
 const request = async (path, { cookies, body, ...options } = {}) => {
   const headers = new globalThis.Headers(options.headers);
-  if (body !== undefined) headers.set('Content-Type', 'application/json');
-  if (cookies) headers.set('Cookie', cookies);
+  if (body !== undefined) {
+    headers.set('Content-Type', 'application/json');
+  }
+  if (cookies) {
+    headers.set('Cookie', cookies);
+  }
 
   const response = await globalThis.fetch(`${baseUrl}${path}`, {
     ...options,
@@ -331,7 +335,9 @@ try {
 }
 
 const cleanupErrors = await cleanupUsers();
-if (primaryError) throw primaryError;
+if (primaryError) {
+  throw primaryError;
+}
 if (cleanupErrors.length > 0) {
   throw new AggregateError(cleanupErrors, '검증 사용자 정리에 실패했습니다.');
 }

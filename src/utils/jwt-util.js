@@ -47,7 +47,9 @@ export const verifyToken = (token, tokenType = 'access') => {
 
 // Access Token 자동 갱신 (만료 5분 전)
 export const shouldRefreshToken = (payload) => {
-  if (!payload || !payload.exp) return false;
+  if (!payload || !payload.exp) {
+    return false;
+  }
 
   const expiresIn = payload.exp - Math.floor(Date.now() / 1000);
 
