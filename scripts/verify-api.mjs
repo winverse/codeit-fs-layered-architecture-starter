@@ -123,10 +123,19 @@ const run = async () => {
   const first = await signUp(firstInput);
   const second = await signUp(secondInput);
 
+  const duplicateSignUp = await request('/api/auth/signup', {
+    method: 'POST',
+    body: firstInput,
+  });
   expectStatus(
-    await request('/api/auth/signup', { method: 'POST', body: firstInput }),
+    duplicateSignUp,
     409,
     '중복 이메일 회원가입은 409를 반환해야 합니다.',
+  );
+  assert.equal(
+    duplicateSignUp.body.success,
+    false,
+    '오류 응답은 success가 false인 JSON이어야 합니다.',
   );
 
   const correctLogin = await request('/api/auth/login', {
