@@ -22,7 +22,13 @@ app.use('/api', apiRouter);
 
 app.use(errorHandler);
 
-const server = app.listen(config.PORT, () => {
+const server = app.listen(config.PORT, (error) => {
+  if (error) {
+    console.error('애플리케이션 시작 실패:', error);
+    process.exitCode = 1;
+    return;
+  }
+
   console.log(
     `[${config.NODE_ENV}] Server running at http://localhost:${config.PORT}`,
   );
