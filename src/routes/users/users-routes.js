@@ -1,6 +1,6 @@
 import express from 'express';
 import { HTTP_STATUS, ERROR_MESSAGE } from '#constants';
-import { usersRepository } from '#repository';
+import { usersRepository } from '#repositories';
 import { authMiddleware, validate } from '#middlewares';
 import {
   createUserSchema,

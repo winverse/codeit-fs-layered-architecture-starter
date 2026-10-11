@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { config } from '#config';
 import { MINUTE_IN_SECONDS } from '#constants';
-import { usersRepository } from '#repository';
+import { usersRepository } from '#repositories';
 
 // Access Token 생성 (15분 유효)
 export const generateAccessToken = (user) => {

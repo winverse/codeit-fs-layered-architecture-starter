@@ -7,7 +7,7 @@
 ## 제공된 코드와 학습 범위
 
 - `src/routes/`: 인증·사용자 API와 비즈니스 규칙이 섞여 있는 시작 코드
-- `src/repository/`: 함수 객체 형태의 Prisma 데이터 접근 코드
+- `src/repositories/`: 함수 객체 형태의 Prisma 데이터 접근 코드
 - `src/prisma/`: Prisma 8 계약(`contract.prisma`), emit 결과물(`contract.json`,
   `contract.d.ts`)과 데이터베이스 연결 파일(`db.js`)
 - `src/utils/`: 비밀번호·JWT·쿠키 처리 함수

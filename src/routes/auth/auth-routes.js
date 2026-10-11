@@ -8,7 +8,7 @@ import {
 import { validate } from '#middlewares';
 import { HTTP_STATUS, ERROR_MESSAGE } from '#constants';
 import { signUpSchema, loginSchema } from './auth-schemas.js';
-import { usersRepository } from '#repository';
+import { usersRepository } from '#repositories';
 import { UnauthorizedException } from '#exceptions';
 
 export const authRouter = express.Router();
