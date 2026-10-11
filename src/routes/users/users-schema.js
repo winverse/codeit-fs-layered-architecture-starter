@@ -22,7 +22,11 @@ export const createUserSchema = z.object({
 });
 
 // 사용자 수정 스키마
-export const updateUserSchema = z.object({
-  email: z.email('유효한 이메일 형식이 아닙니다.').optional(),
-  name: z.string().min(2, '이름은 2자 이상이어야 합니다.').optional(),
-});
+export const updateUserSchema = z
+  .object({
+    email: z.email('유효한 이메일 형식이 아닙니다.').optional(),
+    name: z.string().min(2, '이름은 2자 이상이어야 합니다.').optional(),
+  })
+  .refine((data) => data.email !== undefined || data.name !== undefined, {
+    message: '수정할 필드가 하나 이상 필요합니다.',
+  });

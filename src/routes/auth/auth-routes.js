@@ -2,14 +2,19 @@ import express from 'express';
 import {
   generateTokens,
   setAuthCookies,
+  clearAuthCookies,
   hashPassword,
   comparePassword,
 } from '#utils';
-import { validate } from '#middlewares';
+import { authMiddleware, validate } from '#middlewares';
 import { HTTP_STATUS, ERROR_MESSAGE } from '#constants';
 import { signUpSchema, loginSchema } from './auth-schemas.js';
 import { usersRepository } from '#repositories';
-import { UnauthorizedException } from '#exceptions';
+import {
+  ConflictException,
+  NotFoundException,
+  UnauthorizedException,
+} from '#exceptions';
 
 export const authRouter = express.Router();
 
@@ -19,6 +24,11 @@ authRouter.post(
   async (req, res, next) => {
     try {
       const { email, password, name } = req.body;
+
+      const existingUser = await usersRepository.findUserByEmail(email);
+      if (existingUser) {
+        throw new ConflictException(ERROR_MESSAGE.EMAIL_ALREADY_EXISTS);
+      }
 
       const hashedPassword = await hashPassword(password);
 
@@ -67,3 +77,22 @@ authRouter.post(
     }
   },
 );
+
+authRouter.post('/logout', (req, res) => {
+  clearAuthCookies(res);
+  res.sendStatus(HTTP_STATUS.NO_CONTENT);
+});
+
+authRouter.get('/me', authMiddleware, async (req, res, next) => {
+  try {
+    const user = await usersRepository.findUserById(req.user.id);
+    if (!user) {
+      throw new NotFoundException(ERROR_MESSAGE.USER_NOT_FOUND);
+    }
+
+    const { password: _, ...userWithoutPassword } = user;
+    res.status(HTTP_STATUS.OK).json(userWithoutPassword);
+  } catch (error) {
+    next(error);
+  }
+});

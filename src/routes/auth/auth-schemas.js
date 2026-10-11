@@ -23,10 +23,3 @@ export const loginSchema = z.object({
       '비밀번호는 UTF-8 기준 72바이트 이하여야 합니다.',
     ),
 });
-
-// ID 파라미터 검증 스키마
-export const idParamSchema = z.object({
-  id: z.coerce.number().int().positive({
-    message: 'ID는 양수여야 합니다.',
-  }),
-});

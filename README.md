@@ -6,7 +6,8 @@
 
 ## 제공된 코드와 학습 범위
 
-- `src/routes/`: 인증·사용자 API와 비즈니스 규칙이 섞여 있는 시작 코드
+- `src/routes/`: 인증 API(회원가입·로그인·로그아웃·내 정보 조회), 사용자 CRUD
+  API, `/api/ping` 경로가 비즈니스 규칙과 섞여 있는 시작 코드
 - `src/repositories/`: 함수 객체 형태의 Prisma 데이터 접근 코드
 - `src/prisma/`: Prisma 8 계약(`contract.prisma`), emit 결과물(`contract.json`,
   `contract.d.ts`)과 데이터베이스 연결 파일(`db.js`)
@@ -58,4 +59,5 @@ pnpm dev
 
 터미널에 `[development] Server running at http://localhost:5001`이 보이면
 `http://localhost:5001/api` 아래의 인증·사용자 API를 호출할 수 있습니다.
-`public/`의 테스트 화면은 강의에서 `App` 부트스트랩까지 연결한 뒤에 열립니다.
+브라우저에서 `http://localhost:5001`에 접속하면 `public/`의 테스트 화면에서
+회원가입·로그인·사용자 목록 조회와 `/api/ping` 응답을 확인할 수 있습니다.

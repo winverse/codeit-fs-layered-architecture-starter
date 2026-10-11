@@ -39,8 +39,7 @@ export const verifyToken = (token, tokenType = 'access') => {
         ? config.JWT_ACCESS_SECRET
         : config.JWT_REFRESH_SECRET;
     return jwt.verify(token, secret);
-  } catch (error) {
-    console.error('Token verification error:', error.message);
+  } catch {
     return null;
   }
 };
@@ -69,5 +68,7 @@ export const refreshTokens = async (refreshToken) => {
     return null;
   }
 
-  return generateTokens({ id: user.id, name: user.name });
+  const tokens = generateTokens({ id: user.id, name: user.name });
+
+  return { user, tokens };
 };

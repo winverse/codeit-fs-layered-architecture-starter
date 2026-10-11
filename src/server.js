@@ -8,6 +8,9 @@ import { setupGracefulShutdown } from './common/lifecycle/graceful-shutdown.js';
 
 const app = express();
 
+// 정적 파일 제공 (public 폴더)
+app.use(express.static('public'));
+
 // JSON 파싱
 app.use(express.json());
 

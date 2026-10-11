@@ -5,10 +5,9 @@ import { HTTP_STATUS } from '#constants';
 
 export const router = express.Router();
 
-router.get('/', (req, res) => {
-  res
-    .status(HTTP_STATUS.OK)
-    .send({ now: new Date().toISOString(), message: 'OK' });
+router.get('/ping', (req, res) => {
+  const message = `현재 시간:${new Date().toISOString()}`;
+  res.status(HTTP_STATUS.OK).json({ message });
 });
 
 router.use('/users', userRouter);
