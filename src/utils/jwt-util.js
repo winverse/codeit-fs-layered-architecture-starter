@@ -55,7 +55,7 @@ export const shouldRefreshToken = (payload) => {
   return expiresIn < MINUTE_IN_SECONDS * 5 && expiresIn > 0;
 };
 
-// Refresh Token으로 새 Access Token 발급
+// Refresh Token으로 새 Access Token과 Refresh Token 발급
 export const refreshTokens = async (refreshToken) => {
   const payload = verifyToken(refreshToken, 'refresh');
 
