@@ -1,13 +1,8 @@
+import { corsOrigins, isProduction } from '#config';
+
 export const cors = (req, res, next) => {
   const origin = req.headers.origin;
-  const isProduction = process.env.NODE_ENV === 'production';
-
-  const whiteList = [
-    'https://your-production-site.com',
-    'https://admin.your-site.com',
-  ];
-
-  const isAllowed = !isProduction || (origin && whiteList.includes(origin));
+  const isAllowed = !isProduction || (origin && corsOrigins.includes(origin));
 
   if (isAllowed && origin) {
     res.header('Access-Control-Allow-Origin', origin);

@@ -21,6 +21,8 @@ export const ERROR_MESSAGE = {
   USER_NOT_FOUND_FROM_TOKEN: 'User not found from token',
   AUTH_FAILED: 'Authentication failed',
   INVALID_CREDENTIALS: 'Invalid email or password',
+  FORBIDDEN: 'Forbidden',
+  UNAUTHORIZED: 'Unauthorized',
 
   // Validation
   INVALID_INPUT: 'Invalid input',

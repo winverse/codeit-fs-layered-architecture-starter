@@ -4,7 +4,7 @@ import { config } from '#config';
 import { router as apiRouter } from './routes/index.js';
 import cookieParser from 'cookie-parser';
 import { errorHandler, cors } from '#middlewares';
-import { setupGracefulShutdown } from '#utils';
+import { setupGracefulShutdown } from './common/lifecycle/graceful-shutdown.js';
 
 const app = express();
 
