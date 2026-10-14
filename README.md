@@ -41,11 +41,11 @@ CREATE DATABASE prisma_auth;
    포함되어 있으므로 계약을 바꾸지 않았다면 emit을 다시 실행하지 않아도 됩니다.
 
 ```bash
-pnpm db:init
+pnpm prisma:init
 ```
 
-계약(`src/prisma/contract.prisma`)을 바꿨다면 `pnpm contract:emit`으로 결과물을
-다시 만들고, 이미 테이블이 있는 데이터베이스에는 `pnpm db:update`로 변경을
+계약(`src/prisma/contract.prisma`)을 바꿨다면 `pnpm prisma:emit`으로 결과물을
+다시 만들고, 이미 테이블이 있는 데이터베이스에는 `pnpm prisma:update`로 변경을
 반영합니다.
 
 초기 데이터가 필요하면 `pnpm seed`를 실행합니다. 이 명령은 `localhost:5432`의
