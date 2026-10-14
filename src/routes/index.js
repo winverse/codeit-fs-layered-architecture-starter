@@ -1,6 +1,6 @@
 import express from 'express';
-import { userRouter } from './users/index.js';
-import { authRouter } from './auth/index.js';
+import { usersRouter } from './users/users-routes.js';
+import { authRouter } from './auth/auth-routes.js';
 import { HTTP_STATUS } from '#constants';
 
 export const router = express.Router();
@@ -10,5 +10,5 @@ router.get('/ping', (req, res) => {
   res.status(HTTP_STATUS.OK).json({ message });
 });
 
-router.use('/users', userRouter);
+router.use('/users', usersRouter);
 router.use('/auth', authRouter);
