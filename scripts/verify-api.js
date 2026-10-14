@@ -133,9 +133,9 @@ const run = async () => {
     '중복 이메일 회원가입은 409를 반환해야 합니다.',
   );
   assert.equal(
-    duplicateSignUp.body.success,
-    false,
-    '오류 응답은 success가 false인 JSON이어야 합니다.',
+    typeof duplicateSignUp.body.message,
+    'string',
+    '오류 응답은 message가 있는 JSON이어야 합니다.',
   );
 
   const correctLogin = await request('/api/auth/login', {

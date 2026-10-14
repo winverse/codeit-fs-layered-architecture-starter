@@ -4,7 +4,6 @@ import { HttpException } from '#exceptions';
 export const errorHandler = (err, req, res, _next) => {
   if (err instanceof HttpException) {
     return res.status(err.statusCode).json({
-      success: false,
       message: err.message,
       ...(err.details && { details: err.details }),
     });
@@ -13,7 +12,6 @@ export const errorHandler = (err, req, res, _next) => {
   // express.json 같은 미들웨어가 붙인 4xx 오류(JSON 문법 오류는 400, 본문 크기 초과는 413)
   if (err.status >= 400 && err.status < 500) {
     return res.status(err.status).json({
-      success: false,
       message: ERROR_MESSAGE.BAD_REQUEST,
     });
   }
@@ -21,7 +19,6 @@ export const errorHandler = (err, req, res, _next) => {
   // 23505: 고유 제약 위반(이미 사용 중인 값)
   if (err.sqlState === DB_ERROR.UNIQUE_VIOLATION) {
     return res.status(HTTP_STATUS.CONFLICT).json({
-      success: false,
       message: ERROR_MESSAGE.RESOURCE_CONFLICT,
     });
   }
@@ -29,7 +26,6 @@ export const errorHandler = (err, req, res, _next) => {
   // 처리되지 않은 모든 에러
   console.error(err.stack);
   res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-    success: false,
     message: ERROR_MESSAGE.INTERNAL_SERVER_ERROR,
   });
 };
