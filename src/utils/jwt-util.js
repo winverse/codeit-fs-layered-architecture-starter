@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { config } from '#config';
 import { MINUTE_IN_SECONDS } from '#constants';
-import { usersRepository } from '#repositories';
+import { userRepository } from '#repositories';
 
 // Access Token 생성 (15분 유효)
 export const generateAccessToken = (user) => {
@@ -63,7 +63,7 @@ export const refreshTokens = async (refreshToken) => {
     return null;
   }
 
-  const user = await usersRepository.findUserById(payload.userId);
+  const user = await userRepository.findById(payload.userId);
   if (!user) {
     return null;
   }

@@ -9,7 +9,7 @@ import {
 import { authMiddleware, validate } from '#middlewares';
 import { HTTP_STATUS, ERROR_MESSAGE } from '#constants';
 import { signUpSchema, loginSchema } from './auth-schemas.js';
-import { usersRepository } from '#repositories';
+import { userRepository } from '#repositories';
 import {
   ConflictException,
   NotFoundException,
@@ -25,14 +25,14 @@ authRouter.post(
     try {
       const { email, password, name } = req.body;
 
-      const existingUser = await usersRepository.findUserByEmail(email);
+      const existingUser = await userRepository.findByEmail(email);
       if (existingUser) {
         throw new ConflictException(ERROR_MESSAGE.EMAIL_ALREADY_EXISTS);
       }
 
       const hashedPassword = await hashPassword(password);
 
-      const user = await usersRepository.createUser({
+      const user = await userRepository.create({
         email,
         password: hashedPassword,
         name,
@@ -56,7 +56,7 @@ authRouter.post(
     try {
       const { email, password } = req.body;
 
-      const user = await usersRepository.findUserByEmail(email);
+      const user = await userRepository.findByEmail(email);
 
       if (!user) {
         throw new UnauthorizedException(ERROR_MESSAGE.INVALID_CREDENTIALS);
@@ -85,7 +85,7 @@ authRouter.post('/logout', (req, res) => {
 
 authRouter.get('/me', authMiddleware, async (req, res, next) => {
   try {
-    const user = await usersRepository.findUserById(req.user.id);
+    const user = await userRepository.findById(req.user.id);
     if (!user) {
       throw new NotFoundException(ERROR_MESSAGE.USER_NOT_FOUND);
     }

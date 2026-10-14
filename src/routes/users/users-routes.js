@@ -1,6 +1,6 @@
 import express from 'express';
 import { HTTP_STATUS, ERROR_MESSAGE } from '#constants';
-import { usersRepository } from '#repositories';
+import { userRepository } from '#repositories';
 import { authMiddleware, validate } from '#middlewares';
 import {
   createUserSchema,
@@ -15,7 +15,7 @@ export const usersRouter = express.Router();
 // GET /api/users - 모든 사용자 조회
 usersRouter.get('/', async (req, res, next) => {
   try {
-    const users = await usersRepository.findAllUsers();
+    const users = await userRepository.findAll();
     const usersWithoutPassword = users.map(({ password: _, ...user }) => user);
     res.status(HTTP_STATUS.OK).json(usersWithoutPassword);
   } catch (error) {
@@ -30,7 +30,7 @@ usersRouter.get(
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      const user = await usersRepository.findUserById(id);
+      const user = await userRepository.findById(id);
 
       if (!user) {
         throw new NotFoundException(ERROR_MESSAGE.USER_NOT_FOUND);
@@ -53,7 +53,7 @@ usersRouter.post(
       const { email, password, name } = req.body;
       const hashedPassword = await hashPassword(password);
 
-      const newUser = await usersRepository.createUser({
+      const newUser = await userRepository.create({
         email,
         password: hashedPassword,
         name,
@@ -82,12 +82,12 @@ usersRouter.patch(
         throw new ForbiddenException(ERROR_MESSAGE.FORBIDDEN);
       }
 
-      const existingUser = await usersRepository.findUserById(id);
+      const existingUser = await userRepository.findById(id);
       if (!existingUser) {
         throw new NotFoundException(ERROR_MESSAGE.USER_NOT_FOUND);
       }
 
-      const updatedUser = await usersRepository.updateUser(id, { email, name });
+      const updatedUser = await userRepository.update(id, { email, name });
 
       const { password: _, ...userWithoutPassword } = updatedUser;
       res.status(HTTP_STATUS.OK).json(userWithoutPassword);
@@ -110,12 +110,12 @@ usersRouter.delete(
         throw new ForbiddenException(ERROR_MESSAGE.FORBIDDEN);
       }
 
-      const existingUser = await usersRepository.findUserById(id);
+      const existingUser = await userRepository.findById(id);
       if (!existingUser) {
         throw new NotFoundException(ERROR_MESSAGE.USER_NOT_FOUND);
       }
 
-      await usersRepository.deleteUser(id);
+      await userRepository.delete(id);
 
       res.sendStatus(HTTP_STATUS.NO_CONTENT);
     } catch (error) {
