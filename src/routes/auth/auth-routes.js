@@ -18,6 +18,7 @@ import {
 
 export const authRouter = express.Router();
 
+// POST /api/auth/signup - 회원가입
 authRouter.post(
   '/signup',
   validate('body', signUpSchema),
@@ -49,6 +50,7 @@ authRouter.post(
   },
 );
 
+// POST /api/auth/login - 로그인
 authRouter.post(
   '/login',
   validate('body', loginSchema),
@@ -78,11 +80,13 @@ authRouter.post(
   },
 );
 
+// POST /api/auth/logout - 로그아웃
 authRouter.post('/logout', (req, res) => {
   clearAuthCookies(res);
   res.sendStatus(HTTP_STATUS.NO_CONTENT);
 });
 
+// GET /api/auth/me - 내 정보 조회
 authRouter.get('/me', authMiddleware, async (req, res, next) => {
   try {
     const user = await userRepository.findById(req.user.id);
