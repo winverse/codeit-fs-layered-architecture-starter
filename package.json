@@ -23,7 +23,7 @@
     "prisma:init": "dotenv -e ./env/.env.development -- prisma db init",
     "prisma:update": "dotenv -e ./env/.env.development -- prisma db update",
     "seed": "node --env-file=./env/.env.development ./scripts/seed.js",
-    "verify:api": "node --env-file=./env/.env.development ./scripts/verify-api.mjs",
+    "verify:api": "node --env-file=./env/.env.development ./scripts/verify-api.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint ."
