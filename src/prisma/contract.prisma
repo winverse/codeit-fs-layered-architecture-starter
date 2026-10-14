@@ -9,5 +9,8 @@ model User {
   updatedAt temporal.updatedAtString()
 
   @@map("users")
+  // lower(email)은 이메일을 소문자로 바꾼 값이고, 이 줄은 그 값이 겹치면 저장을 거부하는 고유 인덱스를 만듭니다.
+  // email의 @unique는 대소문자를 구분하므로, 이 인덱스가 없으면 Test@Example.com과 test@example.com을 둘 다 저장합니다.
+  // name은 인덱스 이름의 앞부분이고, 데이터베이스에는 뒤에 짧은 문자열이 붙은 이름으로 만들어집니다.
   @@index(expression: "lower(email)", unique: true, name: "users_email_lower_key")
 }
