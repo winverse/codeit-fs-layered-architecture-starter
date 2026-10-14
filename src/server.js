@@ -14,10 +14,10 @@ app.use(express.static('public'));
 // JSON 파싱
 app.use(express.json());
 
-// 쿠키 파싱 (중요!)
+// 쿠키 파싱 (req.cookies에 저장)
 app.use(cookieParser());
 
-// cors
+// CORS 헤더 설정과 OPTIONS 사전 요청 처리
 app.use(cors);
 
 // API 라우터 등록
@@ -35,5 +35,5 @@ const server = app.listen(config.PORT, (error) => {
   );
 });
 
-// Setup graceful shutdown handlers
+// 종료 신호(SIGINT, SIGTERM)를 받으면 서버와 데이터베이스 연결을 닫도록 등록
 setupGracefulShutdown(server, db);
