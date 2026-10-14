@@ -4,7 +4,7 @@
   "target": "postgres",
   "profileHash": "3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2",
   "roots": {
-    "User": {
+    "users": {
       "model": "User",
       "namespace": "public"
     }
@@ -81,7 +81,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "User"
+              "table": "users"
             }
           }
         }
@@ -93,7 +93,7 @@
       "public": {
         "entries": {
           "table": {
-            "User": {
+            "users": {
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-string@1",
@@ -135,7 +135,14 @@
                 }
               },
               "foreignKeys": [],
-              "indexes": [],
+              "indexes": [
+                {
+                  "expression": "lower(email)",
+                  "name": "users_email_lower_key_f84d49fd",
+                  "prefix": "users_email_lower_key",
+                  "unique": true
+                }
+              ],
               "primaryKey": {
                 "columns": [
                   "id"
@@ -155,10 +162,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "798a4aff7653574b99e1ef6eceb328e4a85ae0722cd232f674f22251b5a99e93"
+    "storageHash": "f82a4b8883e5a63240940d6423bdc28fdac01333ddd407439170e1f3cda34d58"
   },
   "execution": {
-    "executionHash": "76ee8948067fff39e1b787eafdf2c9319ebe5e0f5029f71536b4f58b92d7790e",
+    "executionHash": "0ee8448e950823e31f18e6501fa501483ba59e1a7bc088c060be852d2cdde0e1",
     "mutations": {
       "defaults": [
         {
@@ -171,7 +178,7 @@
             "kind": "generator"
           },
           "ref": {
-            "entry": "User",
+            "entry": "users",
             "field": "updatedAt",
             "namespace": "public"
           }

@@ -14,7 +14,7 @@ const makeUserInput = async () => {
   const password = faker.string.alphanumeric(16);
 
   return {
-    email: faker.internet.email(),
+    email: faker.internet.email().toLowerCase(),
     name: faker.person.fullName(),
     password: await bcrypt.hash(password, BCRYPT_SALT_ROUNDS),
   };

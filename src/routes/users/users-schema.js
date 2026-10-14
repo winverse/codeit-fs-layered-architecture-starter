@@ -9,7 +9,7 @@ export const userIdParamSchema = z.object({
 
 // 사용자 생성 스키마
 export const createUserSchema = z.object({
-  email: z.email('유효한 이메일 형식이 아닙니다.'),
+  email: z.email('유효한 이메일 형식이 아닙니다.').toLowerCase(),
   password: z
     .string({ error: '비밀번호는 필수입니다.' })
     .min(6, '비밀번호는 6자 이상이어야 합니다.')
@@ -20,7 +20,7 @@ export const createUserSchema = z.object({
 // 사용자 수정 스키마
 export const updateUserSchema = z
   .object({
-    email: z.email('유효한 이메일 형식이 아닙니다.').optional(),
+    email: z.email('유효한 이메일 형식이 아닙니다.').toLowerCase().optional(),
     name: z.string().min(2, '이름은 2자 이상이어야 합니다.').optional(),
   })
   .refine((data) => data.email !== undefined || data.name !== undefined, {

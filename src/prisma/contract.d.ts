@@ -18,9 +18,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'798a4aff7653574b99e1ef6eceb328e4a85ae0722cd232f674f22251b5a99e93'>;
+  StorageHashBase<'f82a4b8883e5a63240940d6423bdc28fdac01333ddd407439170e1f3cda34d58'>;
 export type ExecutionHash =
-  ExecutionHashBase<'76ee8948067fff39e1b787eafdf2c9319ebe5e0f5029f71536b4f58b92d7790e'>;
+  ExecutionHashBase<'0ee8448e950823e31f18e6501fa501483ba59e1a7bc088c060be852d2cdde0e1'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -258,7 +258,7 @@ export type FieldInputTypes = {
 };
 export type StorageColumnTypes = {
   readonly public: {
-    readonly User: {
+    readonly users: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly email: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
@@ -270,7 +270,7 @@ export type StorageColumnTypes = {
 };
 export type StorageColumnInputTypes = {
   readonly public: {
-    readonly User: {
+    readonly users: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly email: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
@@ -317,7 +317,7 @@ type ContractBase = Omit<
         readonly kind: 'postgres-schema';
         readonly entries: {
           readonly table: {
-            readonly User: {
+            readonly users: {
               columns: {
                 readonly createdAt: {
                   readonly dataType: 'pg/timestamptz';
@@ -363,7 +363,14 @@ type ContractBase = Omit<
               };
               primaryKey: { readonly columns: readonly ['id'] };
               uniques: readonly [{ readonly columns: readonly ['email'] }];
-              indexes: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'users_email_lower_key_f84d49fd';
+                  readonly prefix: 'users_email_lower_key';
+                  readonly expression: 'lower(email)';
+                  readonly unique: true;
+                },
+              ];
               foreignKeys: readonly [];
             };
           };
@@ -377,7 +384,7 @@ type ContractBase = Omit<
   readonly target: 'postgres';
   readonly targetFamily: 'sql';
   readonly roots: {
-    readonly User: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+    readonly users: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
   };
   readonly domain: {
     readonly namespaces: {
@@ -418,7 +425,7 @@ type ContractBase = Omit<
             };
             readonly relations: Record<string, never>;
             readonly storage: {
-              readonly table: 'User';
+              readonly table: 'users';
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly createdAt: { readonly column: 'createdAt' };
@@ -470,7 +477,7 @@ type ContractBase = Omit<
           readonly onCreate: { readonly id: 'timestampNow'; readonly kind: 'generator' };
           readonly onUpdate: { readonly id: 'timestampNow'; readonly kind: 'generator' };
           readonly ref: {
-            readonly entry: 'User';
+            readonly entry: 'users';
             readonly field: 'updatedAt';
             readonly namespace: 'public';
           };
