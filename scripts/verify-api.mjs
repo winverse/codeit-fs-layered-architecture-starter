@@ -157,7 +157,7 @@ const run = async () => {
       body: { email: firstInput.email, password: `${firstInput.password}B` },
     }),
     400,
-    'UTF-8 기준 72바이트를 초과한 로그인 비밀번호는 400을 반환해야 합니다.',
+    '72자를 초과한 로그인 비밀번호는 400을 반환해야 합니다.',
   );
   expectStatus(
     await request('/api/auth/login', {
