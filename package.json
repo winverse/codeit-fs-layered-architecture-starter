@@ -19,9 +19,9 @@
   "scripts": {
     "dev": "nodemon --env-file=./env/.env.development ./src/server.js",
     "prod": "node --env-file=./env/.env.production src/server.js",
-    "prisma:emit": "dotenv -e ./env/.env.development -- prisma contract emit --format human",
-    "prisma:init": "dotenv -e ./env/.env.development -- prisma db init --format human",
-    "prisma:update": "dotenv -e ./env/.env.development -- prisma db update --format human",
+    "prisma:emit": "dotenv -e ./env/.env.development -- prisma contract emit",
+    "prisma:init": "dotenv -e ./env/.env.development -- prisma db init",
+    "prisma:update": "dotenv -e ./env/.env.development -- prisma db update",
     "seed": "node --env-file=./env/.env.development ./scripts/seed.js",
     "verify:api": "node --env-file=./env/.env.development ./scripts/verify-api.mjs",
     "format": "prettier --write .",
