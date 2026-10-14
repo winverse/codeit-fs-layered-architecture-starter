@@ -1,6 +1,9 @@
 import { corsOrigins, isProduction } from '#config';
 
 export const cors = (req, res, next) => {
+  // 응답 헤더가 요청의 Origin에 따라 달라진다는 것을 캐시에 알립니다
+  res.vary('Origin');
+
   const origin = req.headers.origin;
   const isAllowed = origin && (!isProduction || corsOrigins.includes(origin));
 
