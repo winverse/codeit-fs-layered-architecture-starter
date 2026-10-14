@@ -13,59 +13,39 @@ import { hashPassword } from '#utils';
 export const usersRouter = express.Router();
 
 // GET /api/users - 모든 사용자 조회
-usersRouter.get('/', async (req, res, next) => {
-  try {
-    const users = await userRepository.findAll();
-    const usersWithoutPassword = users.map(({ password: _, ...user }) => user);
-    res.status(HTTP_STATUS.OK).json(usersWithoutPassword);
-  } catch (error) {
-    next(error);
-  }
+usersRouter.get('/', async (req, res) => {
+  const users = await userRepository.findAll();
+  const usersWithoutPassword = users.map(({ password: _, ...user }) => user);
+  res.status(HTTP_STATUS.OK).json(usersWithoutPassword);
 });
 
 // GET /api/users/:id - 특정 사용자 조회
-usersRouter.get(
-  '/:id',
-  validate('params', idParamSchema),
-  async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const user = await userRepository.findById(id);
+usersRouter.get('/:id', validate('params', idParamSchema), async (req, res) => {
+  const { id } = req.params;
+  const user = await userRepository.findById(id);
 
-      if (!user) {
-        throw new NotFoundException(ERROR_MESSAGE.USER_NOT_FOUND);
-      }
+  if (!user) {
+    throw new NotFoundException(ERROR_MESSAGE.USER_NOT_FOUND);
+  }
 
-      const { password: _, ...userWithoutPassword } = user;
-      res.status(HTTP_STATUS.OK).json(userWithoutPassword);
-    } catch (error) {
-      next(error);
-    }
-  },
-);
+  const { password: _, ...userWithoutPassword } = user;
+  res.status(HTTP_STATUS.OK).json(userWithoutPassword);
+});
 
 // POST /api/users - 새 사용자 생성
-usersRouter.post(
-  '/',
-  validate('body', createUserSchema),
-  async (req, res, next) => {
-    try {
-      const { email, password, name } = req.body;
-      const hashedPassword = await hashPassword(password);
+usersRouter.post('/', validate('body', createUserSchema), async (req, res) => {
+  const { email, password, name } = req.body;
+  const hashedPassword = await hashPassword(password);
 
-      const newUser = await userRepository.create({
-        email,
-        password: hashedPassword,
-        name,
-      });
+  const newUser = await userRepository.create({
+    email,
+    password: hashedPassword,
+    name,
+  });
 
-      const { password: _, ...userWithoutPassword } = newUser;
-      res.status(HTTP_STATUS.CREATED).json(userWithoutPassword);
-    } catch (error) {
-      next(error);
-    }
-  },
-);
+  const { password: _, ...userWithoutPassword } = newUser;
+  res.status(HTTP_STATUS.CREATED).json(userWithoutPassword);
+});
 
 // PATCH /api/users/:id - 사용자 정보 수정
 usersRouter.patch(
@@ -73,27 +53,23 @@ usersRouter.patch(
   authMiddleware,
   validate('params', idParamSchema),
   validate('body', updateUserSchema),
-  async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const { email, name } = req.body;
+  async (req, res) => {
+    const { id } = req.params;
+    const { email, name } = req.body;
 
-      if (req.user.id !== id) {
-        throw new ForbiddenException(ERROR_MESSAGE.FORBIDDEN);
-      }
-
-      const existingUser = await userRepository.findById(id);
-      if (!existingUser) {
-        throw new NotFoundException(ERROR_MESSAGE.USER_NOT_FOUND);
-      }
-
-      const updatedUser = await userRepository.update(id, { email, name });
-
-      const { password: _, ...userWithoutPassword } = updatedUser;
-      res.status(HTTP_STATUS.OK).json(userWithoutPassword);
-    } catch (error) {
-      next(error);
+    if (req.user.id !== id) {
+      throw new ForbiddenException(ERROR_MESSAGE.FORBIDDEN);
     }
+
+    const existingUser = await userRepository.findById(id);
+    if (!existingUser) {
+      throw new NotFoundException(ERROR_MESSAGE.USER_NOT_FOUND);
+    }
+
+    const updatedUser = await userRepository.update(id, { email, name });
+
+    const { password: _, ...userWithoutPassword } = updatedUser;
+    res.status(HTTP_STATUS.OK).json(userWithoutPassword);
   },
 );
 
@@ -102,24 +78,20 @@ usersRouter.delete(
   '/:id',
   authMiddleware,
   validate('params', idParamSchema),
-  async (req, res, next) => {
-    try {
-      const { id } = req.params;
+  async (req, res) => {
+    const { id } = req.params;
 
-      if (req.user.id !== id) {
-        throw new ForbiddenException(ERROR_MESSAGE.FORBIDDEN);
-      }
-
-      const existingUser = await userRepository.findById(id);
-      if (!existingUser) {
-        throw new NotFoundException(ERROR_MESSAGE.USER_NOT_FOUND);
-      }
-
-      await userRepository.delete(id);
-
-      res.sendStatus(HTTP_STATUS.NO_CONTENT);
-    } catch (error) {
-      next(error);
+    if (req.user.id !== id) {
+      throw new ForbiddenException(ERROR_MESSAGE.FORBIDDEN);
     }
+
+    const existingUser = await userRepository.findById(id);
+    if (!existingUser) {
+      throw new NotFoundException(ERROR_MESSAGE.USER_NOT_FOUND);
+    }
+
+    await userRepository.delete(id);
+
+    res.sendStatus(HTTP_STATUS.NO_CONTENT);
   },
 );

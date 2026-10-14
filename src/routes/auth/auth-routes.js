@@ -19,66 +19,50 @@ import {
 export const authRouter = express.Router();
 
 // POST /api/auth/signup - 회원가입
-authRouter.post(
-  '/signup',
-  validate('body', signUpSchema),
-  async (req, res, next) => {
-    try {
-      const { email, password, name } = req.body;
+authRouter.post('/signup', validate('body', signUpSchema), async (req, res) => {
+  const { email, password, name } = req.body;
 
-      const existingUser = await userRepository.findByEmail(email);
-      if (existingUser) {
-        throw new ConflictException(ERROR_MESSAGE.EMAIL_ALREADY_EXISTS);
-      }
+  const existingUser = await userRepository.findByEmail(email);
+  if (existingUser) {
+    throw new ConflictException(ERROR_MESSAGE.EMAIL_ALREADY_EXISTS);
+  }
 
-      const hashedPassword = await hashPassword(password);
+  const hashedPassword = await hashPassword(password);
 
-      const user = await userRepository.create({
-        email,
-        password: hashedPassword,
-        name,
-      });
+  const user = await userRepository.create({
+    email,
+    password: hashedPassword,
+    name,
+  });
 
-      const tokens = generateTokens(user);
-      setAuthCookies(res, tokens);
+  const tokens = generateTokens(user);
+  setAuthCookies(res, tokens);
 
-      const { password: _, ...userWithoutPassword } = user;
-      res.status(HTTP_STATUS.CREATED).json(userWithoutPassword);
-    } catch (error) {
-      next(error);
-    }
-  },
-);
+  const { password: _, ...userWithoutPassword } = user;
+  res.status(HTTP_STATUS.CREATED).json(userWithoutPassword);
+});
 
 // POST /api/auth/login - 로그인
-authRouter.post(
-  '/login',
-  validate('body', loginSchema),
-  async (req, res, next) => {
-    try {
-      const { email, password } = req.body;
+authRouter.post('/login', validate('body', loginSchema), async (req, res) => {
+  const { email, password } = req.body;
 
-      const user = await userRepository.findByEmail(email);
+  const user = await userRepository.findByEmail(email);
 
-      if (!user) {
-        throw new UnauthorizedException(ERROR_MESSAGE.INVALID_CREDENTIALS);
-      }
+  if (!user) {
+    throw new UnauthorizedException(ERROR_MESSAGE.INVALID_CREDENTIALS);
+  }
 
-      const isPasswordValid = await comparePassword(password, user.password);
-      if (!isPasswordValid) {
-        throw new UnauthorizedException(ERROR_MESSAGE.INVALID_CREDENTIALS);
-      }
+  const isPasswordValid = await comparePassword(password, user.password);
+  if (!isPasswordValid) {
+    throw new UnauthorizedException(ERROR_MESSAGE.INVALID_CREDENTIALS);
+  }
 
-      const tokens = generateTokens(user);
-      setAuthCookies(res, tokens);
+  const tokens = generateTokens(user);
+  setAuthCookies(res, tokens);
 
-      const { password: _, ...userWithoutPassword } = user;
-      res.status(HTTP_STATUS.OK).json(userWithoutPassword);
-    } catch (error) {
-      next(error);
-    }
-  },
-);
+  const { password: _, ...userWithoutPassword } = user;
+  res.status(HTTP_STATUS.OK).json(userWithoutPassword);
+});
 
 // POST /api/auth/logout - 로그아웃
 authRouter.post('/logout', (req, res) => {
@@ -87,16 +71,12 @@ authRouter.post('/logout', (req, res) => {
 });
 
 // GET /api/auth/me - 내 정보 조회
-authRouter.get('/me', authMiddleware, async (req, res, next) => {
-  try {
-    const user = await userRepository.findById(req.user.id);
-    if (!user) {
-      throw new NotFoundException(ERROR_MESSAGE.USER_NOT_FOUND);
-    }
-
-    const { password: _, ...userWithoutPassword } = user;
-    res.status(HTTP_STATUS.OK).json(userWithoutPassword);
-  } catch (error) {
-    next(error);
+authRouter.get('/me', authMiddleware, async (req, res) => {
+  const user = await userRepository.findById(req.user.id);
+  if (!user) {
+    throw new NotFoundException(ERROR_MESSAGE.USER_NOT_FOUND);
   }
+
+  const { password: _, ...userWithoutPassword } = user;
+  res.status(HTTP_STATUS.OK).json(userWithoutPassword);
 });
