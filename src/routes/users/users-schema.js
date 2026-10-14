@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-// ID 파라미터 검증 스키마
-export const idParamSchema = z.object({
-  id: z.coerce.number().int().positive({
-    message: 'ID는 양수여야 합니다.',
+// 사용자 ID 파라미터 검증 스키마
+export const userIdParamSchema = z.object({
+  userId: z.coerce.number().int().positive({
+    message: '사용자 ID는 양수여야 합니다.',
   }),
 });
 
