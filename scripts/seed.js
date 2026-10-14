@@ -2,6 +2,7 @@ import postgres from '@prisma/orm-postgres/runtime';
 import { faker } from '@faker-js/faker';
 import bcrypt from 'bcrypt';
 import { pathToFileURL, URL } from 'node:url';
+import { EXIT_CODE } from '#constants';
 import contractJson from '../src/prisma/contract.json' with { type: 'json' };
 
 const NUM_USERS_TO_CREATE = 5;
@@ -82,7 +83,7 @@ const run = async () => {
     await seed(db);
   } catch (error) {
     console.error('❌ 시딩 에러:', error);
-    process.exitCode = 1;
+    process.exitCode = EXIT_CODE.FAILURE;
   } finally {
     await db.close();
   }

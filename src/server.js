@@ -4,6 +4,7 @@ import { config } from '#config';
 import { router as apiRouter } from './routes/index.js';
 import cookieParser from 'cookie-parser';
 import { errorHandler, cors } from '#middlewares';
+import { EXIT_CODE } from '#constants';
 import { setupGracefulShutdown } from './common/lifecycle/graceful-shutdown.js';
 
 const app = express();
@@ -28,7 +29,7 @@ app.use(errorHandler);
 const server = app.listen(config.PORT, (error) => {
   if (error) {
     console.error('애플리케이션 시작 실패:', error);
-    process.exitCode = 1;
+    process.exitCode = EXIT_CODE.FAILURE;
     return;
   }
 

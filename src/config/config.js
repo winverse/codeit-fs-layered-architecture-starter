@@ -1,4 +1,5 @@
 import { flattenError, z } from 'zod';
+import { EXIT_CODE } from '#constants';
 
 const envSchema = z
   .object({
@@ -35,7 +36,7 @@ const parseEnvironment = () => {
       const { fieldErrors } = flattenError(error);
       console.error('환경 변수 검증 실패:', fieldErrors);
     }
-    process.exit(1);
+    process.exit(EXIT_CODE.FAILURE);
   }
 };
 
