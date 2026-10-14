@@ -31,7 +31,17 @@ export const validate = (target, schema) => {
         );
       }
 
-      Object.assign(req[target], result.data);
+      // Express 5의 req.query는 읽을 때마다 새로 만드는 getter라서 Object.assign으로 바꾼 값이 남지 않으므로 속성을 다시 정의합니다.
+      if (target === 'query') {
+        Object.defineProperty(req, 'query', {
+          value: result.data,
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        });
+      } else {
+        Object.assign(req[target], result.data);
+      }
       next();
     } catch (error) {
       next(error);
