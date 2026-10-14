@@ -1,5 +1,5 @@
 import express from 'express';
-import { db } from './prisma/db.js';
+import { db } from '#prisma/db.js';
 import { config } from '#config';
 import { router as apiRouter } from './routes/index.js';
 import cookieParser from 'cookie-parser';

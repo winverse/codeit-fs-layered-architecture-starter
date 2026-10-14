@@ -1,4 +1,4 @@
-import { config } from '#config';
+import { isProduction } from '#config';
 import { MINUTE_IN_MS, DAY_IN_MS } from '#constants';
 
 // 인증 쿠키 설정
@@ -8,7 +8,7 @@ export const setAuthCookies = (res, tokens) => {
   // Access Token 쿠키
   res.cookie('accessToken', accessToken, {
     httpOnly: true, // JavaScript로 접근 불가 (XSS 방지)
-    secure: config.NODE_ENV === 'production', // HTTPS에서만 전송
+    secure: isProduction, // HTTPS에서만 전송
     sameSite: 'lax', // 여러 크로스 사이트 요청을 제한하는 방어 계층
     maxAge: 15 * MINUTE_IN_MS, // 15분
     path: '/', // 모든 경로에서 쿠키 전송
@@ -17,7 +17,7 @@ export const setAuthCookies = (res, tokens) => {
   // Refresh Token 쿠키
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
-    secure: config.NODE_ENV === 'production',
+    secure: isProduction,
     sameSite: 'lax',
     maxAge: 7 * DAY_IN_MS, // 7일
     path: '/',
