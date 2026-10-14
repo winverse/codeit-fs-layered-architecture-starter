@@ -10,6 +10,14 @@ export const errorHandler = (err, req, res, _next) => {
     });
   }
 
+  // express.json 같은 미들웨어가 붙인 4xx 오류(JSON 문법 오류는 400, 본문 크기 초과는 413)
+  if (err.status >= 400 && err.status < 500) {
+    return res.status(err.status).json({
+      success: false,
+      message: ERROR_MESSAGE.BAD_REQUEST,
+    });
+  }
+
   // 23505: 고유 제약 위반(이미 사용 중인 값)
   if (err.sqlState === DB_ERROR.UNIQUE_VIOLATION) {
     return res.status(HTTP_STATUS.CONFLICT).json({
