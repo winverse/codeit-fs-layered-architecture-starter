@@ -2,14 +2,11 @@ import { corsOrigins, isProduction } from '#config';
 
 export const cors = (req, res, next) => {
   const origin = req.headers.origin;
-  const isAllowed = !isProduction || (origin && corsOrigins.includes(origin));
+  const isAllowed = origin && (!isProduction || corsOrigins.includes(origin));
 
-  if (isAllowed && origin) {
+  if (isAllowed) {
     res.header('Access-Control-Allow-Origin', origin);
     res.header('Access-Control-Allow-Credentials', 'true');
-  } else if (!isProduction) {
-    // 개발 환경인데 Origin 헤더가 없는 경우(Postman 등)를 위해 최소한의 허용
-    res.header('Access-Control-Allow-Origin', '*');
   }
 
   // 공통 헤더 설정
