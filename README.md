@@ -1,4 +1,4 @@
-# Layered Architecture 마이그레이션 Starter
+# Layered Architecture Starter
 
 이 프로젝트는 Express와 Prisma 8로 만든 인증·사용자 API를 계층형 아키텍처로
 마이그레이션하기 위한 시작 코드입니다. 처음 실행하면 라우터 안에 HTTP 처리,
