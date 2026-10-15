@@ -25,11 +25,7 @@ app.use('/api', apiRouter);
 
 app.use(errorHandler);
 
-const server = app.listen(config.PORT, (error) => {
-  if (error) {
-    throw error;
-  }
-
+const server = app.listen(config.PORT, () => {
   console.log(
     `[${config.NODE_ENV}] Server running at http://localhost:${config.PORT}`,
   );
