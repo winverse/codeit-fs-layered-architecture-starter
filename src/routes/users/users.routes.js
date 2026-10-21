@@ -6,7 +6,7 @@ import {
   createUserSchema,
   userIdParamSchema,
   updateUserSchema,
-} from './users-schemas.js';
+} from './users.schemas.js';
 import { ForbiddenException, NotFoundException } from '#exceptions';
 import { hashPassword } from '#utils';
 

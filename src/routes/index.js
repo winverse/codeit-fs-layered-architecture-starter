@@ -1,6 +1,6 @@
 import express from 'express';
-import { usersRouter } from './users/users-routes.js';
-import { authRouter } from './auth/auth-routes.js';
+import { usersRouter } from './users/users.routes.js';
+import { authRouter } from './auth/auth.routes.js';
 import { HTTP_STATUS } from '#constants';
 
 export const router = express.Router();

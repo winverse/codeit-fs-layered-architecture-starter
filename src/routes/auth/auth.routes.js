@@ -8,7 +8,7 @@ import {
 } from '#utils';
 import { authMiddleware, validate } from '#middlewares';
 import { HTTP_STATUS, ERROR_MESSAGE } from '#constants';
-import { signUpSchema, loginSchema } from './auth-schemas.js';
+import { signUpSchema, loginSchema } from './auth.schemas.js';
 import { userRepository } from '#repositories';
 import {
   ConflictException,
